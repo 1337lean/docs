@@ -4,9 +4,9 @@
   "name": "buffer.lol",
   "description": "Documentation for the buffer.lol diagnostics toolbox for network, IP, web, and developer checks.",
   "colors": {
-    "primary": "#38BDF8",
-    "light": "#60A5FA",
-    "dark": "#2563EB"
+    "primary": "#9B87F5",
+    "light": "#B9A9FF",
+    "dark": "#7557E7"
   },
   "favicon": "/favicon.svg",
   "logo": {
@@ -14,13 +14,22 @@
     "dark": "/logo/dark.svg"
   },
   "appearance": {
-    "default": "dark"
+    "default": "dark",
+    "strict": false
+  },
+  "font": {
+    "family": "Inter",
+    "headings": "Inter"
   },
   "icons": {
     "library": "lucide"
   },
   "background": {
-    "decoration": "grid"
+    "decoration": "grid",
+    "color": {
+      "light": "#F7F5FF",
+      "dark": "#08080D"
+    }
   },
   "seo": {
     "metatags": {
