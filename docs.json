@@ -4,7 +4,7 @@
   "name": "buffer.lol",
   "description": "Documentation for the buffer.lol diagnostics toolbox for network, IP, web, and developer checks.",
   "colors": {
-    "primary": "#9B87F5",
+    "primary": "#7557E7",
     "light": "#B9A9FF",
     "dark": "#7557E7"
   },
@@ -64,7 +64,7 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/roger/buffer.lol",
+          "href": "https://github.com/1337lean/buffer.lol",
           "icon": "github"
         }
       ]
@@ -85,7 +85,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/roger/buffer.lol"
+      "github": "https://github.com/1337lean/buffer.lol"
     }
   }
 }

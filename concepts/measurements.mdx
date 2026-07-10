@@ -31,10 +31,22 @@ RDAP lookups summarize domain and IP registration data from public RDAP provider
 
 ASN checks use Team Cymru DNS data to connect a public IP address or autonomous system number to origin network records. Results can include ASN, prefix, country, registry, allocation date, and network name.
 
+## Browser latency
+
+The Browser Latency Test sends repeated same-origin HTTPS requests from your browser to buffer.lol. It reports minimum, average, and maximum round-trip time plus approximate jitter. This is application-layer latency, not ICMP ping, and it does not measure latency to an arbitrary host.
+
+## Connection stability
+
+The Connection Stability Test sends a larger series of HTTPS samples to buffer.lol and counts requests that fail or time out. A failed-request percentage can indicate an unstable browser-to-site path, but it is not a raw network packet-loss measurement.
+
+## Traceroute
+
+Traceroute runs from buffer.lol's restricted diagnostics worker to a public destination. It reports public hops and round-trip timings visible from that server. Private infrastructure hop addresses and raw command output are hidden by default.
+
 ## Duration
 
 Server-side API responses include `durationMs`. This is the time buffer.lol spent handling that diagnostic request, not a promise about the end user's network quality.
 
-## Worker-required checks
+## Worker-backed checks
 
-Ping, packet-loss sampling, and traceroute need ICMP or traceroute privileges that are not reliable in ordinary serverless runtimes. buffer.lol marks those tools as worker-required until a container or VM worker is available.
+Traceroute requires privileges that are not available in ordinary serverless runtimes, so it runs through a separate authenticated container or VM worker. Browser latency and connection stability do not use that worker.

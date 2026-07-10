@@ -17,15 +17,21 @@ Network and IP checks use `POST /api/tools/[slug]` when they need the buffer.lol
 
 RDAP results are requested from rdap.org, and ASN results are requested from Team Cymru's DNS ASN service. DNS, RDAP, and ASN responses may be cached briefly to reduce repeated provider calls.
 
+Browser Latency Test and Connection Stability Test send repeated same-origin HTTPS requests to buffer.lol. Traceroute sends the submitted public destination to a restricted diagnostics worker.
+
 ## Target validation
 
-Server-side diagnostics reject private, local, reserved, and multicast addresses before making outbound requests. URL checks only support HTTP and HTTPS, and URLs with embedded credentials are not allowed.
+Server-side diagnostics reject private, local, reserved, and multicast addresses before making outbound requests. HTTP requests are pinned to the address that passed validation to prevent a later DNS resolution from switching to a blocked destination. URL checks only support HTTP and HTTPS, and URLs with embedded credentials are not allowed.
 
 ## Result storage
 
-The committed app displays results in the current browser session. API responses include a `requestId` for troubleshooting, but diagnostic payloads are not designed as file storage or a long-term result archive.
+The app displays results in the current browser session. API responses include a `requestId` for troubleshooting, but diagnostic payloads are not designed as file storage or a long-term result archive. Successful result panels do not display request IDs by default.
 
 Rate limiting uses a hashed client-and-target key. If Upstash Redis is configured, the limit is shared across app instances; otherwise, it is enforced in memory per instance. In production, proxy IP headers are ignored unless the deployment explicitly trusts its platform or reverse proxy; when enabled, `cf-connecting-ip` wins over `x-real-ip`, which wins over `x-forwarded-for`.
+
+## Private analytics
+
+When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. The tracker is disabled when the BufferDash URL or site ID is not configured. Analytics are used to understand product usage, reliability, and abuse patterns.
 
 ## What not to infer
 

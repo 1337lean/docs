@@ -12,6 +12,10 @@ Server-backed tools call one same-origin diagnostics endpoint. Each request runs
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `POST` | `/api/tools/[slug]` | Run one diagnostics tool |
+| `GET` | `/api/tools/ping` | Return one lightweight browser-latency sample |
+| `GET` | `/api/tools/packet-loss` | Return one lightweight connection-stability sample |
+
+The two `GET` routes are sampled repeatedly by their browser tools. They measure HTTPS request behavior to buffer.lol; they do not run ICMP ping or accept an arbitrary target.
 
 ## Request body
 
@@ -60,6 +64,7 @@ Errors use the same envelope with `error` instead of `data`:
 | `whois-lookup` | Domain or public IP address | RDAP registration and network summary |
 | `redirect-checker` | HTTP or HTTPS URL | Redirect chain up to eight hops |
 | `robots-sitemap` | HTTP or HTTPS URL | robots.txt preview, declared sitemaps, and sitemap.xml status |
+| `traceroute` | Public hostname or IP address | Public hops and timings from the diagnostics worker |
 
 ## Example
 
@@ -94,10 +99,10 @@ curl -s https://buffer.lol/api/tools/dns-lookup \
 | URLs | Only HTTP and HTTPS URLs are supported |
 | Credentials | URLs with embedded credentials are rejected |
 | Default scheme | URL tools assume `https://` when no scheme is provided |
-| Address safety | Private, local, reserved, and multicast IP addresses are rejected for outbound checks |
+| Address safety | Private, local, reserved, and multicast IP addresses are rejected, and HTTP requests are pinned to the validated address |
 | Fetch timeout | HTTP and RDAP provider requests time out after 8 seconds |
 | TCP timeout | Port and TLS checks time out after 7 seconds |
-| Body size | Request bodies over 4 KiB are rejected |
+| Body size | Request bodies over 4 KiB are rejected while the body stream is read, including chunked requests |
 | Cross-origin requests | Browser requests with a foreign `Origin` header are rejected |
 | Rate limiting | Requests are limited to 30 per minute by client identity, tool slug, and target |
 | Concurrency | Live diagnostics are capped per app instance by `DIAGNOSTICS_MAX_CONCURRENCY`, defaulting to 20 |
@@ -119,17 +124,20 @@ RDAP-backed responses use [rdap.org](https://rdap.org/) for domain and IP regist
 
 When proxy headers are not trusted, `my-ip` returns an unavailable state instead of echoing spoofable headers.
 
-## Worker-required tools
+## Browser connection tools
 
-These slugs exist in the product catalog but return a friendly `501` disabled response from the shared API until `ENABLE_WORKER_TOOLS=true` and `DIAGNOSTICS_WORKER_URL` point to a healthy container or VM worker:
+`ping` and `packet-loss` are retained as route slugs for compatibility, but the public tools use repeated same-origin `GET` requests rather than worker-backed ICMP commands:
 
-| Slug | Why |
+| Slug | Public behavior |
 | --- | --- |
-| `ping` | ICMP ping requires raw socket permissions |
-| `packet-loss` | Packet-loss sampling requires ICMP support |
-| `traceroute` | Traceroute requires traceroute privileges |
+| `ping` | Browser Latency Test; six HTTPS round-trip samples to buffer.lol |
+| `packet-loss` | Connection Stability Test; twenty HTTPS samples and failed-request counting |
 
-When the worker is enabled, the public API remains `POST /api/tools/[slug]`; the Next.js route proxies internally to worker endpoints such as `POST /api/ping`. If `DIAGNOSTICS_WORKER_TOKEN` is set, the route sends it to the worker as a bearer token.
+## Worker-backed traceroute
+
+`POST /api/tools/traceroute` requires `ENABLE_WORKER_TOOLS=true`, a configured `DIAGNOSTICS_WORKER_URL`, and a non-empty `DIAGNOSTICS_WORKER_TOKEN`. The Next.js route proxies the validated target to `POST /api/traceroute` on the restricted worker and sends the token as a bearer credential.
+
+The worker refuses to start in production without its token. Private infrastructure hop addresses and raw traceroute output are excluded by default. Operators may set `INCLUDE_RAW_DIAGNOSTICS=true` only when they intentionally want raw output.
 
 ## Authentication
 
