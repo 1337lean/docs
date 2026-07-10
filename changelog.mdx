@@ -5,6 +5,17 @@ description: What's new in buffer.lol.
 
 # Changelog
 
+## July 10, 2026
+
+- Renamed Ping Tester to Browser Latency Test and Packet Loss Tester to Connection Stability Test so the names match their browser-based HTTPS measurements.
+- Renamed IP Geolocation to IP Network Lookup to match the RDAP country, network, and ASN data returned.
+- Enabled authenticated worker-backed traceroute while keeping latency and stability sampling in the browser.
+- Added structured diagnostic results, output copy actions, clearer failure details, a branded 404 page, and accessibility improvements.
+- Added private BufferDash analytics support with an HTTPS-only tracker configuration and updated privacy disclosure.
+- Hardened outbound requests against DNS rebinding, enforced streamed request-body limits, expanded reserved-IP filtering, bounded in-memory caches, and made reverse-proxy trust explicit.
+- Added generated robots.txt and sitemap.xml routes, canonical tool metadata, and response security headers.
+- Added automated tests and CI validation before VPS deployment, updated Next.js, and moved the production image to a smaller non-root standalone runtime.
+
 ## June 18, 2026
 
 - Rebuilt buffer.lol as a public diagnostics toolbox for network, IP, web, and developer checks.
