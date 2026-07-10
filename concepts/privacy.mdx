@@ -31,7 +31,9 @@ Rate limiting uses a hashed client-and-target key. If Upstash Redis is configure
 
 ## Private analytics
 
-When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. The tracker is disabled when the BufferDash URL or site ID is not configured. Analytics are used to understand product usage, reliability, and abuse patterns.
+When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. Server-backed checks and the browser latency/stability tools may also record the tool slug, whether the check succeeded, and its duration. Submitted diagnostic targets and browser-local tool inputs are not included in these product events.
+
+The tracker is disabled when the BufferDash URL or site ID is not configured. BufferDash restricts browser tracking requests to the configured `buffer.lol` site domain and can anonymize stored IP addresses. Analytics are used to understand product usage, reliability, and abuse patterns.
 
 ## What not to infer
 
