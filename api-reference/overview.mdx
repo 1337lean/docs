@@ -25,7 +25,33 @@ The two `GET` routes are sampled repeatedly by their browser tools. They measure
 }
 ```
 
-`input` is a string. The expected format depends on the tool.
+`input` is a string. The expected format depends on the tool. Most tools need no other fields, but DNS Resolver Comparison and Email DNS Health accept a supported `options` object.
+
+### DNS resolver options
+
+```json
+{
+  "input": "example.com",
+  "options": {
+    "recordType": "MX"
+  }
+}
+```
+
+`recordType` defaults to `A` and must be one of `A`, `AAAA`, `CNAME`, `MX`, `NS`, `TXT`, or `CAA`.
+
+### Email DNS options
+
+```json
+{
+  "input": "example.com",
+  "options": {
+    "dkimSelector": "selector1"
+  }
+}
+```
+
+`dkimSelector` is optional. When provided, it is lowercased and must be a valid DNS selector of at most 253 characters. When omitted, the result explains that a selector is required to check a DKIM public key.
 
 ## Response envelope
 
@@ -64,6 +90,9 @@ Errors use the same envelope with `error` instead of `data`:
 | `whois-lookup` | Domain or public IP address | RDAP registration and network summary |
 | `redirect-checker` | HTTP or HTTPS URL | Redirect chain up to eight hops |
 | `robots-sitemap` | HTTP or HTTPS URL | robots.txt preview, declared sitemaps, and sitemap.xml status |
+| `dns-resolver-check` | Domain plus optional `recordType` | Normalized answers and agreement status from Cloudflare, Google, Quad9, and OpenDNS |
+| `email-dns-health` | Domain plus optional `dkimSelector` | MX, SPF, DMARC, DKIM, MTA-STS, and TLS reporting checks with status summaries |
+| `security-headers` | HTTP or HTTPS URL | Final URL, redirect count, response headers, and individual security-control recommendations |
 | `traceroute` | Public hostname or IP address | Public hops and timings from the diagnostics worker |
 
 ## Example
@@ -104,15 +133,22 @@ curl -s https://buffer.lol/api/tools/dns-lookup \
 | TCP timeout | Port and TLS checks time out after 7 seconds |
 | Body size | Request bodies over 4 KiB are rejected while the body stream is read, including chunked requests |
 | Cross-origin requests | Browser requests with a foreign `Origin` header are rejected |
-| Rate limiting | Requests are limited to 30 per minute by client identity, tool slug, and target |
+| DNS query timeout | Public-resolver and email DNS queries use a 3-second timeout with one attempt |
+| Rate limiting | `POST` requests are limited by client identity, tool slug, and normalized target: 15 per minute for `dns-resolver-check` and `email-dns-health`, and 30 per minute for other tools. The lightweight `GET` sampling routes allow 1,000 requests per minute by client identity and slug |
 | Concurrency | Live diagnostics are capped per app instance by `DIAGNOSTICS_MAX_CONCURRENCY`, defaulting to 20 |
-| Short cache | DNS responses cache for 60 seconds; RDAP caches for 1 hour; ASN responses cache for 30 minutes |
+| Short cache | DNS lookups cache for 60 seconds; resolver comparisons for 30 seconds; RDAP for 1 hour; ASN responses for 30 minutes |
 
 Rate-limited responses return `429` with `Retry-After`. Responses that reach rate-limit evaluation include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` headers. When `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are configured, rate limits coordinate through Upstash; otherwise, they use an in-memory per-instance fallback.
 
 ## Providers and attribution
 
-RDAP-backed responses use [rdap.org](https://rdap.org/) for domain and IP registration data. ASN responses use [Team Cymru](https://www.team-cymru.org/)'s DNS-based ASN service. Provider outages return a `502` error in the standard response envelope, while timeouts return `504`.
+RDAP-backed responses use [rdap.org](https://rdap.org/) for domain and IP registration data. ASN responses use [Team Cymru](https://www.team-cymru.org/)'s DNS-based ASN service. DNS Resolver Comparison queries the public recursive resolvers operated by Cloudflare (`1.1.1.1`), Google (`8.8.8.8`), Quad9 (`9.9.9.9`), and OpenDNS (`208.67.222.222`). RDAP and ASN upstream failures return a `502` error in the standard response envelope, while their timeouts return `504`; resolver and email DNS query failures appear within their successful structured reports.
+
+## Diagnostic-specific behavior
+
+- DNS Resolver Comparison compares normalized answer sets and ignores ordering and TTL differences. A missing answer or resolver error is distinct from a conflicting answer.
+- Email DNS Health checks published configuration only. It does not test inbox placement, sender reputation, or complete deliverability.
+- HTTP Security Headers follows at most five redirects, validates every destination against the same public-address rules, and inspects the final response without retaining its body. The returned checks are recommendations, not a security grade.
 
 ## Proxy IP behavior
 

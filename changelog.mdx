@@ -5,13 +5,20 @@ description: What's new in buffer.lol.
 
 # Changelog
 
+## July 14, 2026
+
+- Added DNS Resolver Comparison for normalized `A`, `AAAA`, `CNAME`, `MX`, `NS`, `TXT`, and `CAA` answers from Cloudflare, Google, Quad9, and OpenDNS.
+- Added Email DNS Health checks for MX, SPF, DMARC, optional DKIM selectors, MTA-STS, and SMTP TLS reporting.
+- Added HTTP Security Headers inspection with safely validated redirects, headers-only requests, individual findings, and recommendations instead of a letter grade.
+- Added the keyboard-accessible tool launcher, recent-tool quick access, related-tool navigation, and safe public-target handoffs between diagnostic workflows.
+
 ## July 10, 2026
 
 - Renamed Ping Tester to Browser Latency Test and Packet Loss Tester to Connection Stability Test so the names match their browser-based HTTPS measurements.
 - Renamed IP Geolocation to IP Network Lookup to match the RDAP country, network, and ASN data returned.
 - Enabled authenticated worker-backed traceroute while keeping latency and stability sampling in the browser.
 - Added structured diagnostic results, output copy actions, clearer failure details, a branded 404 page, and accessibility improvements.
-- Added private BufferDash analytics with HTTPS-only loading, site-origin enforcement, anonymized-IP support, and privacy-safe tool usage events that exclude submitted targets and local tool inputs.
+- Added private BufferDash analytics with HTTPS-only production loading, site-origin enforcement, anonymized-IP support, and privacy-safe tool usage events that exclude submitted targets and local tool inputs.
 - Hardened outbound requests against DNS rebinding, enforced streamed request-body limits, expanded reserved-IP filtering, bounded in-memory caches, and made reverse-proxy trust explicit.
 - Added generated robots.txt and sitemap.xml routes, canonical tool metadata, and response security headers.
 - Added automated tests and CI validation before VPS deployment, updated Next.js, and moved the production image to a smaller non-root standalone runtime.

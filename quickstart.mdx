@@ -9,7 +9,7 @@ Run a diagnostic from any modern browser.
 
 ## 1. Open the toolbox
 
-Go to [buffer.lol](https://buffer.lol) and choose a tool from the networking, IP, or developer sections.
+Go to [buffer.lol](https://buffer.lol) and choose a tool from the networking, IP, or developer sections. To jump directly to a tool, choose **Find a tool** or press <kbd>Command</kbd>+<kbd>K</kbd> on macOS or <kbd>Ctrl</kbd>+<kbd>K</kbd> on Windows and Linux.
 
 ## 2. Enter a target
 
@@ -17,7 +17,10 @@ Server-backed diagnostics ask for a target such as a domain, URL, IP address, AS
 
 ```text
 DNS Lookup         example.com
+DNS Resolver       example.com + A, AAAA, CNAME, MX, NS, TXT, or CAA
+Email DNS Health   example.com + an optional DKIM selector
 HTTP Headers      https://example.com
+Security Headers  https://example.com
 SSL Checker       example.com
 Port Checker      example.com:443
 ASN Lookup        1.1.1.1 or AS13335
@@ -27,7 +30,7 @@ Browser Latency Test and Connection Stability Test do not ask for a target. They
 
 ## 3. Run the check
 
-Choose **Run check** for server-backed diagnostics. Tools such as JSON Formatter, Base64, Hash Generator, URL Parser, JWT Decoder, and Regex Tester run directly in the browser.
+Choose the tool's action, such as **Run check**, **Compare resolvers**, or **Inspect security headers**, for server-backed diagnostics. Tools such as JSON Formatter, Base64, Hash Generator, URL Parser, JWT Decoder, and Regex Tester run directly in the browser.
 
 ## 4. Interpret the output
 
@@ -36,7 +39,10 @@ Server-backed tools display structured, readable results and provide a copy acti
 | Signal | What it tells you |
 | --- | --- |
 | DNS records | Which addresses, mail exchangers, nameservers, and text records are published |
+| Resolver comparison | Whether Cloudflare, Google, Quad9, and OpenDNS return the same normalized answer set |
+| Email DNS health | Whether recognizable MX, SPF, DMARC, optional DKIM, MTA-STS, and TLS reporting records are published |
 | HTTP status and headers | Whether a URL responds and which caching, server, redirect, and content metadata it exposes |
+| HTTP security headers | Which transport and browser security controls appear on the final response, with recommendations for missing controls |
 | TLS certificate | Whether the certificate is accepted, who issued it, and when it expires |
 | Port reachability | Whether a public TCP port accepts connections from the diagnostics service |
 | RDAP and ASN data | Which network, registrar, country, or autonomous system is associated with a target |
@@ -45,7 +51,7 @@ Server-backed tools display structured, readable results and provide a copy acti
 
 ## 5. Compare when needed
 
-Repeat the same check after a DNS change, deploy, certificate renewal, or firewall update. Network data can vary by resolver, route, proxy, and cache timing.
+Repeat the same check after a DNS change, deploy, certificate renewal, or firewall update. Network data can vary by resolver, route, proxy, and cache timing. Related-tool links can carry the current public target into the next check so you can continue the same investigation.
 
 <Tip>
   If a target works in your browser but fails in buffer.lol, check whether it blocks external probes, requires authentication, resolves to a private address, or only accepts traffic from a specific network.
