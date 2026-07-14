@@ -11,11 +11,13 @@ buffer.lol includes two kinds of tools: browser-local utilities and server-side 
 
 Developer utilities such as JSON Formatter, Base64, Hash Generator, UUID Generator, Timestamp Converter, URL Parser, JWT Decoder, Regex Tester, CIDR Calculator, and User Agent Parser run in your browser. Their input is processed by client-side JavaScript and is not sent to the diagnostics API.
 
+The tool launcher keeps up to five recently opened tool slugs in browser local storage to populate quick access. It does not store diagnostic targets or launcher search text there.
+
 ## Server-side diagnostics
 
-Network and IP checks use `POST /api/tools/[slug]` when they need the buffer.lol server to resolve DNS, make an HTTP request, open a TCP connection, read a TLS certificate, or query RDAP and ASN data. The API receives the target you submit, normal request metadata, and the headers required to serve the response.
+Network and IP checks use `POST /api/tools/[slug]` when they need the buffer.lol server to resolve DNS, make an HTTP request, open a TCP connection, read a TLS certificate, or query RDAP and ASN data. The API receives the target and supported options you submit, normal request metadata, and the headers required to serve the response.
 
-RDAP results are requested from rdap.org, and ASN results are requested from Team Cymru's DNS ASN service. DNS, RDAP, and ASN responses may be cached briefly to reduce repeated provider calls.
+RDAP results are requested from rdap.org, and ASN results are requested from Team Cymru's DNS ASN service. DNS Resolver Comparison sends the requested domain and record type to Cloudflare, Google, Quad9, and OpenDNS from the buffer.lol server. DNS, resolver comparison, RDAP, and ASN responses may be cached briefly to reduce repeated provider calls.
 
 Browser Latency Test and Connection Stability Test send repeated same-origin HTTPS requests to buffer.lol. Traceroute sends the submitted public destination to a restricted diagnostics worker.
 
@@ -31,9 +33,9 @@ Rate limiting uses a hashed client-and-target key. If Upstash Redis is configure
 
 ## Private analytics
 
-When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. Server-backed checks and the browser latency/stability tools may also record the tool slug, whether the check succeeded, and its duration. Submitted diagnostic targets and browser-local tool inputs are not included in these product events.
+When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. Product events may record when the tool launcher opens, which tool is selected, the selection source, related-tool navigation, the tool slug, whether a check succeeded, and its duration. Launcher search text, submitted diagnostic targets, supported options such as a DKIM selector, and browser-local tool inputs are not included in these product events.
 
-The tracker is disabled when the BufferDash URL or site ID is not configured. BufferDash restricts browser tracking requests to the configured `buffer.lol` site domain and can anonymize stored IP addresses. Analytics are used to understand product usage, reliability, and abuse patterns.
+The tracker is disabled when the BufferDash URL or site ID is not configured. In production, the loader accepts only an HTTPS BufferDash URL; non-production development also permits HTTP on a loopback host. BufferDash restricts browser tracking requests to the configured `buffer.lol` site domain by default and can anonymize stored IP addresses. Analytics are used to understand product usage, reliability, and abuse patterns.
 
 ## What not to infer
 

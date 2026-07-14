@@ -11,9 +11,27 @@ buffer.lol returns diagnostic signals rather than a single score. Each tool answ
 
 DNS lookups show the records published for a domain. `A` and `AAAA` records identify IPv4 and IPv6 addresses, `MX` records identify mail exchangers, `TXT` records often carry verification and policy data, and `NS` or `SOA` records describe delegation and authority.
 
+## DNS resolver comparison
+
+DNS Resolver Comparison queries Cloudflare, Google, Quad9, and OpenDNS concurrently for one selected record type: `A`, `AAAA`, `CNAME`, `MX`, `NS`, `TXT`, or `CAA`. It normalizes and sorts the returned values before comparing answer sets, so record order and TTL differences do not count as disagreements.
+
+Agreement means the public resolvers that returned answers produced the same normalized values at that moment. It is not a geographic propagation map, and a resolver with no answer or a query error is reported separately from a different answer.
+
+## Email DNS health
+
+Email DNS Health checks published MX, SPF, DMARC, optional DKIM, MTA-STS, and SMTP TLS reporting records. A DKIM check requires the selector used by the sender, such as `google`, `selector1`, or `default`; DKIM cannot be discovered reliably from the domain alone.
+
+The report evaluates recognizable DNS configuration. It does not send mail or measure inbox placement, sender reputation, policy alignment for a particular message, or complete deliverability.
+
 ## HTTP status and headers
 
 HTTP checks show the response status, response time from the diagnostics service, and headers. Headers can reveal cache behavior, redirects, content type, server metadata, security policy, and whether a target rejects `HEAD` requests.
+
+## HTTP security headers
+
+HTTP Security Headers follows up to five safely validated redirects and inspects the final response. It checks HTTPS transport, HSTS, Content Security Policy, clickjacking protection, MIME sniffing protection, Referrer Policy, Permissions Policy, and cross-origin isolation/resource policies. It uses `HEAD` when supported and otherwise makes a headers-only ranged request without retaining the page body.
+
+The result reports individual pass, warning, fail, or informational checks with observed values and recommendations. It intentionally does not assign a letter grade: the right policy depends on the site's application behavior, embedded content, and threat model.
 
 ## TLS validity
 
