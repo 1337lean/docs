@@ -33,11 +33,9 @@ The app displays results in the current browser session. API responses include a
 
 Rate limiting uses a hashed client-and-target key. If Upstash Redis is configured, the limit is shared across app instances; otherwise, it is enforced in memory per instance. In production, proxy IP headers are ignored unless the deployment explicitly trusts its platform or reverse proxy; when enabled, `cf-connecting-ip` wins over `x-real-ip`, which wins over `x-forwarded-for`.
 
-## Private analytics
+## Analytics and hosting metadata
 
-When the operator configures BufferDash, private analytics may collect page paths, referrers, session identifiers, outbound clicks, browser metadata, user agent, IP-derived signals, and timing information. Product events may record when the tool launcher opens, which tool is selected, the selection source, related-tool navigation, the tool slug, whether a check succeeded, and its duration. Launcher search text, submitted diagnostic targets, supported options such as a DKIM selector, and browser-local tool inputs are not included in these product events.
-
-The tracker is disabled when the BufferDash URL or site ID is not configured. In production, the loader accepts only an HTTPS BufferDash URL; non-production development also permits HTTP on a loopback host. BufferDash restricts browser tracking requests to the configured `buffer.lol` site domain by default and can anonymize stored IP addresses. Analytics are used to understand product usage, reliability, and abuse patterns.
+buffer.lol does not run product analytics or third-party tracking. The hosting platform may process basic request metadata such as request time, IP address, user agent, and abuse-prevention signals as needed to deliver and protect the service.
 
 ## What not to infer
 
