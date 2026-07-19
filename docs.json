@@ -47,6 +47,14 @@
         ]
       },
       {
+        "group": "IP Lens",
+        "pages": [
+          "ip-lens/overview",
+          "ip-lens/using-ip-lens",
+          "ip-lens/privacy"
+        ]
+      },
+      {
         "group": "Concepts",
         "pages": [
           "concepts/measurements",

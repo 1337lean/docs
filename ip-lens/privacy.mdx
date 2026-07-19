@@ -1,0 +1,68 @@
+---
+title: Privacy and data flow
+description: How IP Lens handles lookups, local data, personal keys, exports, and deletion.
+---
+
+# Privacy and data flow
+
+IP Lens has no account, advertising, analytics, attribution SDK, tracking, developer-operated backend, or iCloud sync. Its privacy model depends on whether a feature needs an external data source.
+
+## Data flow by feature
+
+| Action | Destination | Retention in IP Lens |
+| --- | --- | --- |
+| Automatic current-IP lookup | Selected IP provider | Successful result enters recent history |
+| Entered public-IP lookup | Selected IP provider | Successful result enters recent history |
+| DNS or reverse-DNS query | Selected Cloudflare or Quad9 resolver | Retained only when explicitly saved |
+| Domain, IP, or ASN registration query | Authoritative RDAP registry | Retained only when explicitly saved |
+| Batch IP lookup | Selected IP provider | Retained only when explicitly saved |
+| Subnet calculation | Device only | Not persisted |
+| CSV or JSON preparation | Device, then a user-selected share destination | IP Lens does not upload the file |
+
+Free IP lookup requests go to `ipwho.is`. Personal-key requests go to `ipwhois.pro`. Third-party services receive the submitted query and ordinary connection metadata, including the public source IP needed to return a response. Their own terms and privacy policies govern their handling of that data.
+
+## No IP Lens lookup proxy
+
+The iPhone connects directly to the selected provider, resolver, or registry. IP Lens requests are not routed through buffer.lol and are not part of `POST /api/tools/[slug]`.
+
+```text
+IP lookup       iPhone ──→ ipwho.is or ipwhois.pro
+DNS lookup      iPhone ──→ selected Cloudflare or Quad9 resolver
+RDAP lookup     iPhone ──→ authoritative registry
+Subnet/export   iPhone only, until you choose an export destination
+```
+
+## Data stored on the iPhone
+
+IP Lens uses an on-device SwiftData store for:
+
+- Up to 100 recent unique successful IP lookup snapshots
+- IP favorites
+- Explicitly saved DNS, RDAP, and batch captures
+
+Resolver, provider mode, appearance, and onboarding preferences use on-device settings. IP Lens does not sync this data through iCloud.
+
+Saved results are snapshots, not live records. They remain available offline until deleted, but external network and registration data can change after capture.
+
+## Personal provider keys
+
+An optional personal `ipwhois.pro` key is stored in Apple Keychain after validation. It is not included in preferences, lookup snapshots, exports, or logs.
+
+Remove the key under **Settings → Personal API Key** when it is no longer needed. Removing the app deletes its app-container data, but Keychain items can persist across uninstall and reinstall, so remove the key in Settings first if you want it explicitly deleted.
+
+## Maps and location
+
+IP Lens does not request GPS or Core Location permission. Map positions use approximate coordinates supplied by the IP data provider. They describe an estimated network location, not the physical position of an iPhone or person.
+
+## Exports
+
+CSV and JSON files are prepared locally. IP Lens sends a prepared export only to the destination you choose through the iOS share sheet. Once shared, that destination's storage and privacy rules apply.
+
+## Delete local data
+
+- Delete favorites or saved DNS, RDAP, and batch captures individually from their saved-result views.
+- Use **Settings → Clear History and Saved Utilities** to clear lookup history and saved DNS, RDAP, and batch captures. This action does not remove favorites, preferences, or the Keychain API key.
+- Remove a personal provider key separately in Settings.
+- Removing IP Lens deletes data in the app container.
+
+For the complete public notice, read [IP Lens Privacy](https://buffer.lol/ip-lens/privacy). For privacy questions or deletion help, visit [IP Lens support](https://buffer.lol/ip-lens/support).

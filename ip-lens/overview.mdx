@@ -1,0 +1,71 @@
+---
+title: IP Lens overview
+description: A native iPhone toolkit for IP lookup, DNS, RDAP, subnet calculations, and batch analysis.
+---
+
+# IP Lens overview
+
+<img src="/images/ip-lens/app-icon.png" alt="IP Lens app icon" width="112" />
+
+IP Lens is a focused networking toolkit built natively for iPhone. It combines public IPv4 and IPv6 lookup with DNS inspection, authoritative registration data, offline subnet calculations, bounded batch analysis, saved results, and local exports.
+
+IP Lens is **coming soon** for iPhone models running iOS 17 or later. It is planned as a $4.99 one-time App Store purchase with no subscription, advertisements, or account requirement.
+
+<CardGroup cols={2}>
+  <Card title="Use IP Lens" icon="smartphone" href="/ip-lens/using-ip-lens">
+    Learn the core lookup, calculation, saving, and export workflows.
+  </Card>
+  <Card title="Privacy and data flow" icon="shield" href="/ip-lens/privacy">
+    See which work stays on-device and where online requests are sent.
+  </Card>
+</CardGroup>
+
+## What you can do
+
+| Tool | Purpose |
+| --- | --- |
+| IP Lookup | Inspect approximate location, ASN, ISP, organization, timezone, and network details for a public IPv4 or IPv6 address |
+| DNS Lookup | Query `A`, `AAAA`, `CNAME`, `MX`, `NS`, `TXT`, and `PTR` records through a selected DNS-over-HTTPS resolver |
+| Registration Lookup | Review domain, IP, and ASN registration data from the authoritative RDAP registry |
+| Subnet Calculator | Calculate IPv4 and IPv6 networks, ranges, masks, prefixes, and capacity without a network request |
+| Batch Lookup | Analyze up to 50 unique public IP addresses in one run |
+| Saved results | Reopen lookup history, favorites, and explicitly saved DNS, RDAP, and batch captures offline |
+| Export | Prepare CSV or JSON files locally and choose where to share them with the iOS share sheet |
+
+<Frame caption="IP Lookup shows provider-supplied network and approximate location details.">
+  <img src="/images/ip-lens/ip-lookup.png" alt="IP Lens IP Lookup screen showing an IPv4 result with approximate location and a map" />
+</Frame>
+
+## How requests work
+
+IP Lens does not send lookups through buffer.lol and does not operate a developer-controlled lookup backend. Online requests go directly from the iPhone to the service needed for the selected tool:
+
+- Free IP lookups use `ipwho.is`; personal-key mode uses `ipwhois.pro`.
+- DNS queries go to exactly one selected resolver: Cloudflare or Quad9.
+- Registration queries go to the authoritative RDAP registry selected with IANA bootstrap data.
+- Subnet calculations and export generation stay on the device.
+
+This architecture is separate from the same-origin diagnostics API documented in the [buffer.lol API reference](/api-reference/overview).
+
+## Requirements and availability
+
+| Requirement | Version 1.0 plan |
+| --- | --- |
+| Device | iPhone |
+| Operating system | iOS 17 or later |
+| Language | English |
+| Account | Not required |
+| Pricing | Planned $4.99 one-time purchase in USD |
+| Status | Coming soon |
+
+New IP, DNS, and registration lookups require an internet connection. Saved captures and the subnet calculator remain useful offline. iPad and Mac layouts, iCloud sync, active network scanning, traceroute, and automation are not part of version 1.0.
+
+<Note>
+  Features, providers, pricing, and availability may change before the App Store release.
+</Note>
+
+## More information
+
+- Visit the [IP Lens product page](https://buffer.lol/ip-lens) for the latest public release status.
+- Use [IP Lens support](https://buffer.lol/ip-lens/support) to report a problem or request a feature.
+- Read the public [IP Lens privacy notice](https://buffer.lol/ip-lens/privacy).
