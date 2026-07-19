@@ -1,11 +1,13 @@
 ---
 title: Introduction
-description: Network, IP, web, and developer diagnostics in one browser-first toolbox.
+description: Browser-based diagnostics from buffer.lol and native iPhone networking tools from IP Lens.
 ---
 
 # Introduction
 
-buffer.lol is a diagnostics toolbox for quick network, IP, web, and developer checks. Use it to inspect domains, endpoints, certificates, ports, public IP details, browser signals, and everyday encoded data without opening a full monitoring suite.
+These docs cover two related products: the browser-based buffer.lol diagnostics toolbox and IP Lens, a native iPhone networking app that is coming soon.
+
+buffer.lol provides quick network, IP, web, and developer checks. Use it to inspect domains, endpoints, certificates, ports, public IP details, browser signals, and everyday encoded data without opening a full monitoring suite.
 
 ## What buffer.lol checks
 
@@ -23,6 +25,12 @@ buffer.lol is a diagnostics toolbox for quick network, IP, web, and developer ch
     Measure browser-to-buffer.lol HTTPS latency and stability, or trace server-side network hops through the restricted diagnostics worker.
   </Card>
 </CardGroup>
+
+## IP Lens for iPhone
+
+IP Lens brings public IP lookup, DNS-over-HTTPS, authoritative RDAP registration, offline IPv4 and IPv6 subnet calculation, bounded batch lookup, saved results, and local CSV/JSON export into a native iPhone app.
+
+IP Lens does not use the buffer.lol diagnostics API or operate its own lookup backend. Online requests go directly from the iPhone to the selected IP data provider, DNS resolver, or authoritative registry. Start with the [IP Lens overview](/ip-lens/overview).
 
 ## Find a tool
 
@@ -45,5 +53,8 @@ Local dev   http://localhost:3000
   </Card>
   <Card title="API Reference" icon="code" href="/api-reference/overview">
     Call the diagnostics API used by server-side tools.
+  </Card>
+  <Card title="IP Lens" icon="smartphone" href="/ip-lens/overview">
+    Explore the native iPhone app and understand its direct-provider data flow.
   </Card>
 </CardGroup>

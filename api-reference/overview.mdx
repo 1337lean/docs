@@ -7,6 +7,10 @@ description: Endpoint overview for buffer.lol diagnostics tools.
 
 Server-backed tools call one same-origin diagnostics endpoint. Each request runs a single tool by slug and returns a small JSON envelope.
 
+<Note>
+  This API powers browser-based buffer.lol diagnostics only. IP Lens does not call these routes and does not expose a separate public API; its online requests go directly from the iPhone to the selected data provider, DNS resolver, or authoritative RDAP registry.
+</Note>
+
 ## Endpoint
 
 | Method | Path | Purpose |
