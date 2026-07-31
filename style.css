@@ -1,0 +1,275 @@
+/* ==========================================================================
+   buffer.lol docs theme
+   Mirrors the minimal, monochrome UI of buffer.lol (app/globals.css):
+   flat surfaces, 1px lines, tight radii, IBM Plex Mono for code, no accent hue.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  --bl-background: #ffffff;
+  --bl-surface: #f7f7f8;
+  --bl-surface-raised: #efeff1;
+  --bl-text: #0c0c0d;
+  --bl-muted: #6d6d76;
+  --bl-line: #e3e3e6;
+  --bl-line-strong: #cfcfd4;
+  --bl-success: #3f8f66;
+  --bl-warning: #96702f;
+  --bl-danger: #b25252;
+
+  --bl-radius-sm: 0.375rem;
+  --bl-radius-md: 0.5rem;
+  --bl-radius-lg: 0.75rem;
+  --bl-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --bl-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.dark {
+  --bl-background: #0c0c0d;
+  --bl-surface: #141416;
+  --bl-surface-raised: #1a1a1d;
+  --bl-text: #f5f5f5;
+  --bl-muted: #8f8f98;
+  --bl-line: #232326;
+  --bl-line-strong: #333338;
+  --bl-success: #86c9a4;
+  --bl-warning: #d9b273;
+  --bl-danger: #e58a8a;
+}
+
+/* Swap Mintlify's mono face for the one the product UI uses. */
+html[class] {
+  --font-paper-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+html body h1 {
+  letter-spacing: -0.03em;
+}
+
+html body h2,
+html body h3,
+html body h4 {
+  letter-spacing: -0.02em;
+}
+
+html body ::selection {
+  background: var(--bl-text);
+  color: var(--bl-background);
+}
+
+html body #content-area .prose p,
+html body #content-area .prose li {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+html body code,
+html body pre,
+html body kbd,
+html body [class*="font-mono"] {
+  font-family: var(--bl-mono);
+}
+
+/* Inline code: bordered chip, no backtick decoration, no accent tint. */
+html body #content-area :not(pre) > code {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--bl-line);
+  border-radius: var(--bl-radius-sm);
+  background: var(--bl-surface);
+  color: var(--bl-text);
+  font-family: var(--bl-mono);
+  font-size: 0.8125em;
+  font-weight: 400;
+}
+
+html body #content-area :not(pre) > code::before,
+html body #content-area :not(pre) > code::after {
+  content: none;
+}
+
+html body kbd {
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--bl-line-strong);
+  border-radius: var(--bl-radius-sm);
+  background: transparent;
+  box-shadow: none;
+  color: var(--bl-muted);
+  font-family: var(--bl-mono);
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
+/* Prose links read as text with a rule under them, like .inline-link on the site. */
+html body #content-area .prose a:not(.card):not([class*="group/link"]):not([class*="not-prose"]) {
+  border-bottom: 1px solid var(--bl-line-strong);
+  text-decoration: none;
+  transition: border-color 150ms var(--bl-ease);
+}
+
+html body #content-area .prose a:not(.card):not([class*="group/link"]):not([class*="not-prose"]):hover {
+  border-bottom-color: currentColor;
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+html body .card {
+  border-radius: var(--bl-radius-lg) !important;
+  border-color: var(--bl-line) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: border-color 150ms var(--bl-ease), background 150ms var(--bl-ease) !important;
+}
+
+html body .card:hover {
+  border-color: var(--bl-line-strong) !important;
+  background: var(--bl-surface) !important;
+}
+
+html body [data-component-part="card-title"] {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+html body [data-component-part="card-icon"] {
+  color: var(--bl-muted) !important;
+  fill: var(--bl-muted) !important;
+}
+
+/* ==========================================================================
+   Code blocks
+   ========================================================================== */
+
+html body .code-block,
+html body [data-component-part="code-block-root"] {
+  border-radius: var(--bl-radius-lg) !important;
+  border-color: var(--bl-line) !important;
+  background: var(--bl-surface) !important;
+}
+
+html body .code-block pre {
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   Callouts — monochrome surface with one semantic edge
+   ========================================================================== */
+
+html body .callout {
+  border-radius: var(--bl-radius-lg) !important;
+  border-color: var(--bl-line) !important;
+  background: var(--bl-surface) !important;
+}
+
+html body .callout p,
+html body .callout li,
+html body .callout span,
+html body .callout strong,
+html body .callout a,
+html body .callout div {
+  color: var(--bl-text) !important;
+}
+
+html body .callout[class*="green"] {
+  box-shadow: inset 2px 0 0 var(--bl-success);
+}
+
+html body .callout[class*="yellow"],
+html body .callout[class*="amber"],
+html body .callout[class*="orange"] {
+  box-shadow: inset 2px 0 0 var(--bl-warning);
+}
+
+html body .callout[class*="red"] {
+  box-shadow: inset 2px 0 0 var(--bl-danger);
+}
+
+html body .callout[class*="blue"],
+html body .callout[class*="sky"] {
+  box-shadow: inset 2px 0 0 var(--bl-line-strong);
+}
+
+html body .callout[class*="green"] svg {
+  color: var(--bl-success) !important;
+}
+
+html body .callout[class*="yellow"] svg,
+html body .callout[class*="amber"] svg,
+html body .callout[class*="orange"] svg {
+  color: var(--bl-warning) !important;
+}
+
+html body .callout[class*="red"] svg {
+  color: var(--bl-danger) !important;
+}
+
+html body .callout[class*="blue"] svg,
+html body .callout[class*="sky"] svg {
+  color: var(--bl-muted) !important;
+}
+
+/* ==========================================================================
+   Tables, frames, dividers
+   ========================================================================== */
+
+html body #content-area table {
+  font-size: 0.875rem;
+}
+
+html body #content-area th {
+  color: var(--bl-muted);
+  font-weight: 500;
+}
+
+html body #content-area td,
+html body #content-area th {
+  border-color: var(--bl-line) !important;
+}
+
+html body #content-area hr {
+  border-color: var(--bl-line) !important;
+}
+
+html body #content-area img,
+html body .frame img {
+  border-radius: var(--bl-radius-lg);
+}
+
+/* ==========================================================================
+   Chrome — navbar, sidebar, search
+   ========================================================================== */
+
+/* Primary CTA: inverted fill, like .primary-button on the site. */
+html body #topbar-cta-button a > span:first-child {
+  border-radius: var(--bl-radius-md) !important;
+  background: var(--bl-text) !important;
+}
+
+html body #topbar-cta-button a span,
+html body #topbar-cta-button a svg {
+  color: var(--bl-background) !important;
+}
+
+/* Search entry: flat surface with a single line, no ring or shadow. */
+html body [class*="group/search"] {
+  border: 1px solid var(--bl-line-strong) !important;
+  border-radius: var(--bl-radius-md) !important;
+  background: var(--bl-surface) !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #sidebar a,
+html body #sidebar button {
+  border-radius: var(--bl-radius-md) !important;
+}
+
+html body #navbar div[class*="border-b"] {
+  border-color: var(--bl-line) !important;
+}

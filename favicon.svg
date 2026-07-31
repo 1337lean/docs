@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="buffer.lol terminal prompt">
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="#050508"/>
-  <rect x="8" y="8" width="48" height="48" rx="11" fill="#9b87f5" fill-opacity="0.1" stroke="#9b87f5" stroke-opacity="0.78" stroke-width="2"/>
-  <path d="M20 22L32 32L20 42" fill="none" stroke="#b9a9ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M37 42H48" fill="none" stroke="#b9a9ff" stroke-width="6" stroke-linecap="round"/>
+  <rect width="64" height="64" rx="11" fill="#0c0c0d"/>
+  <rect x="0.5" y="0.5" width="63" height="63" rx="10.5" fill="none" stroke="#333338"/>
+  <path d="M19 22.5 30 32 19 41.5" fill="none" stroke="#f5f5f5" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 42h10" fill="none" stroke="#f5f5f5" stroke-width="5.5" stroke-linecap="round"/>
 </svg>
